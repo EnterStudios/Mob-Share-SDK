@@ -17,6 +17,23 @@
     <application
         android:allowBackup="true"
         android:debuggable="true" >
+         <!-- share sdk -->
+    <activity
+        android:name="com.mob.tools.MobUIShell"
+        android:configChanges="keyboardHidden|orientation|screenSize"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar"
+        android:windowSoftInputMode="stateHidden|adjustResize">
+        <intent-filter>
+            <data android:scheme="tencent1105371965" />
+
+            <action android:name="android.intent.action.VIEW" />
+
+            <category android:name="android.intent.category.BROWSABLE" />
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+    </activity>
+
     </application>
 
 </manifest>
