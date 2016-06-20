@@ -1,51 +1,57 @@
-# Mob-Share-SDK
-##前言
-###这是Mob-Share SDK(一个社会化分享组件)Android Studio版本
+package cn.sharesdk.share.demo;
 
-Mob官方社会化分享库还是eclipse，我把项目转成gradle项目（Android Studio项目）给大家，方便大家使用，不用自己再转了
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.onekeyshare.OnekeyShareTheme;
 
-本篇文章是参照[博文](http://www.cnblogs.com/smyhvae/p/4585340.html)进行操作的，亲测有效！
+public class MainActivity extends Activity implements OnClickListener {
 
-##步骤
-###1、导入两个module
-***注意：***有两个lib都需要导入：
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		findViewById(R.id.button1).setOnClickListener(this);
+		findViewById(R.id.button2).setOnClickListener(this);
+		findViewById(R.id.button3).setOnClickListener(this);
+		findViewById(R.id.button4).setOnClickListener(this);
 
-- onekeyshare
-- mainlibs
+		// 初始化ShareSDK
+		ShareSDK.initSDK(this);
+	}
 
-其中您的项目只要引用onekeyshare项目就可以了
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.button1:
+			showShare(this, null, true);
+			break;
+		case R.id.button2:
+			showShare(this, null, false);
+			break;
+		case R.id.button3:
+			startActivity(new Intent(this, DerectShareWithEditActivity.class));
+			break;
+		case R.id.button4:
+			startActivity(new Intent(this, DerectShareWithoutEditActivity.class));
+			break;
+		}
+	}
 
-###2、在app module(就是入口module中）assets中导入ShareSDK.xml
-这个ShareSDK.xml其实就是配置文件，你想用什么分享的sdk直接在里面配置就行了,注意***AppKey和AppSecret依然是需要自己去各个平台申请的***，
-其中新浪还需要配置***RedirectUrl***不然无法正常调起
-
-```
-
-<SinaWeibo
-    Id="1"
-    SortId="1"
-    AppKey="568898243"
-    AppSecret="38a4f8204cc784f81f9f0daaf31e02e3"
-    RedirectUrl="http://www.mob.com"
-    Enable="true" />
-                
-```
-- 其中的SortId是此平台在分享列表中的位置，由开发者自行定义，可以是任何整型数字，数值越大越靠后
-- AppKey、AppSecret和RedirectUrl是您在新浪微博上注册开发者信息和应用后得到的信息
-- Id是一个保留的识别符，整型，ShareSDK不使用此字段，供您在自己的项目中当作平台的识别符。
-- Enable字段表示此平台是否有效，布尔值，默认为true，如果Enable为false，即便平台的jar包已经添加到应用中，平台实例依然不可获取。
-
-###3开始使用
-####初始化ShareSDK
-
-```
-	ShareSDK.initSDK(this);
-```
-####开始使用
-以下是官网的demo，更多见[这里](官网的示例demo/)
-
-```
-OnekeyShare oks = new OnekeyShare();
+	/**
+	 * 演示调用ShareSDK执行分享
+	 *
+	 * @param context
+	 * @param platformToShare  指定直接分享平台名称（一旦设置了平台名称，则九宫格将不会显示）
+	 * @param showContentEdit  是否显示编辑页
+	 */
+	public static void showShare(Context context, String platformToShare, boolean showContentEdit) {
+		OnekeyShare oks = new OnekeyShare();
 		oks.setSilent(!showContentEdit);
 		if (platformToShare != null) {
 			oks.setPlatform(platformToShare);
@@ -99,21 +105,38 @@ OnekeyShare oks = new OnekeyShare();
 
 		// 启动分享
 		oks.show(context);
-```
-##成功案例
-###看最下面就是集成成功的案例（我只加了微信、qq和微博）
-![](share_example.jpg)
-因为我手机语言是英文，所以会显示英文
+	}
 
-##常见的坑
-####1、新浪微博始终无法正常调起，报4000错误
-需要填入:https://api.weibo.com/oauth2/default.html
-![](share_sina.png)
-然后在ShareSDK.xml中配置：
-![](share_sina_config.png)
+	public static String[] randomPic() {
+		String url = "http://git.oschina.net/alexyu.yxj/MyTmpFiles/raw/master/kmk_pic_fld/";
+		String urlSmall = "http://git.oschina.net/alexyu.yxj/MyTmpFiles/raw/master/kmk_pic_fld/small/";
+		String[] pics = new String[] {
+				"120.JPG",
+				"127.JPG",
+				"130.JPG",
+				"18.JPG",
+				"184.JPG",
+				"22.JPG",
+				"236.JPG",
+				"237.JPG",
+				"254.JPG",
+				"255.JPG",
+				"263.JPG",
+				"265.JPG",
+				"273.JPG",
+				"37.JPG",
+				"39.JPG",
+				"IMG_2219.JPG",
+				"IMG_2270.JPG",
+				"IMG_2271.JPG",
+				"IMG_2275.JPG",
+				"107.JPG"
+		};
+		int index = (int) (System.currentTimeMillis() % pics.length);
+		return new String[] {
+				url + pics[index],
+				urlSmall + pics[index]
+		};
+	}
 
-##关于我
-###LiuTaw,安卓开发者,苏州
-###[更多文章，LiuTaw的安卓踩坑之旅](http://liutaw.github.io)
-
-> 作者：刘涛，版权声明：自由转载-非商用-非衍生-保持署名|[Creative Commons BY-NC-ND 4.0](url:http://creativecommons.org/licenses/by-nc-sa/4.0/)
+}
