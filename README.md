@@ -35,7 +35,36 @@ Mob官方社会化分享库还是eclipse，我把项目转成gradle项目（Andr
 - Id是一个保留的识别符，整型，ShareSDK不使用此字段，供您在自己的项目中当作平台的识别符。
 - Enable字段表示此平台是否有效，布尔值，默认为true，如果Enable为false，即便平台的jar包已经添加到应用中，平台实例依然不可获取。
 
-###3开始使用
+###3微信、易信和支付宝的特殊处理
+如果您集成了微信，易信，支付宝还需要添加下面回调的activity处理；
+
+```
+<!--微信分享回调 -->
+ <activity
+     android:name=".wxapi.WXEntryActivity"
+     android:theme="@android:style/Theme.Translucent.NoTitleBar"
+     android:configChanges="keyboardHidden|orientation|screenSize"
+     android:exported="true"
+     android:screenOrientation="portrait" /> 
+ 
+<!--易信分享回调 -->
+ <activity
+     android:name=".yxapi.YXEntryActivity"
+     android:theme="@android:style/Theme.Translucent.NoTitleBar"
+     android:configChanges="keyboardHidden|orientation|screenSize"
+     android:exported="true"
+     android:screenOrientation="portrait" />
+ 
+ <!-- 支付宝分享回调 -->
+<activity
+    android:name=".apshare.ShareEntryActivity"
+    android:theme="@android:style/Theme.Translucent.NoTitleBar"
+    android:configChanges="keyboardHidden|orientation|screenSize"
+    android:exported="true"/>
+
+```
+
+###4开始使用
 ####初始化ShareSDK
 
 ```
@@ -108,9 +137,50 @@ OnekeyShare oks = new OnekeyShare();
 ##常见的坑
 ####1、新浪微博始终无法正常调起，报4000错误
 需要填入:https://api.weibo.com/oauth2/default.html
+
+在新浪微博开发平台后台里面设置
 ![](share_sina.png)
 然后在ShareSDK.xml中配置：
 ![](share_sina_config.png)
+
+####2、无法加入短信分享的问题
+
+####3、附上申请地址列表
+```
+新浪微博        http://open.weibo.com
+腾讯微博        http://dev.t.qq.com
+QQ空间          http://connect.qq.com/intro/login/
+微信好友        http://open.weixin.qq.com
+Facebook       https://developers.facebook.com
+Twitter        https://dev.twitter.com
+人人网          http://dev.renren.com
+开心网          http://open.kaixin001.com
+搜狐微博        http://open.t.sohu.com
+网易微博        http://open.t.163.com
+豆瓣           http://developers.douban.com
+有道云笔记      http://note.youdao.com/open/developguide.html#app
+印象笔记        https://dev.evernote.com/
+Linkedin       https://developer.linkedin.com
+FourSquare     https://developer.foursquare.com/
+搜狐随身看      https://open.sohu.com/
+Flickr         http://www.flickr.com/services/
+Pinterest      http://developers.pinterest.com/
+Tumblr         http://www.tumblr.com/developers
+Dropbox        https://www.dropbox.com/developers
+Instagram      http://instagram.com/developer#
+VKontakte      http://vk.com/dev
+易信好友        http://open.yixin.im/
+明道	           http://open.mingdao.com/
+Line           http://media.line.me/zh-hant/
+Pocket         http://getpocket.com/developer/apps/new
+KakaoTalk      https://developers.kakao.com/
+KakaoStory     https://developers.kakao.com/
+
+```
+
+4、更多常见问题
+
+[点击这里跳转](http://bbs.mob.com/forum.php?mod=viewthread&tid=30&extra=page%3D1)
 
 ##关于我
 ###LiuTaw,安卓开发者,苏州
