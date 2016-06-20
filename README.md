@@ -178,8 +178,18 @@ KakaoTalk      https://developers.kakao.com/
 KakaoStory     https://developers.kakao.com/
 
 ```
+###4、无故多余某个不需要分享的问题
+比如说新浪微博明明没有在xml里面配置却自己出来了，现在解决方案是在xml中增加新浪微博配置，显性地调用Enable属性为false,这样就可以避免出现了
+> Enable="fasle" 
 
-4、更多常见问题
+```
+ <SinaWeibo AppKey="" AppSecret="" Enable="fasle" Id="1"
+        RedirectUrl="https://api.weibo.com/oauth2/default.html" ShareByAppClient="true"
+        SortId="10" />
+```
+
+
+###5、更多常见问题
 
 [点击这里跳转](http://bbs.mob.com/forum.php?mod=viewthread&tid=30&extra=page%3D1)
 
